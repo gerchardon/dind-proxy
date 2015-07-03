@@ -1,0 +1,16 @@
+{
+  "name": "node-docker-proxy",
+  "version": "0.1.0",
+  "main": "server.js",
+  "author": "Gerome CHARDON",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.8.1",
+    "docker-allcontainers": "^0.4.0",
+    "http-proxy": "^1.11.1",
+    "lodash": "^3.10.0"
+  },
+  "bin": {
+    "dind-proxy": "./server.js"
+  }
+}
