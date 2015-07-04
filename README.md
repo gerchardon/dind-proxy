@@ -12,6 +12,8 @@ Access to export port of a docker engine runing in docker (dind)
         -p 8000:80 -p 2222:22 -e HOST_DATA=/tmp/data progrium/envy
     sudo npm install -g dind-proxy
     sudo dind-proxy
+    # Or by docker
+    docker run -p 80:80 -d -v /var/run/docker.sock:/var/run/docker.sock gerchardon/dind-proxy
 
 Go to http://envy.127.0.0.1.xip.io/u/<gituser>
 
