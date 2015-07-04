@@ -2,7 +2,8 @@ var http = require('http'),
     httpProxy = require('http-proxy'),
     allContainers = require('docker-allcontainers'),
     program = require('commander'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    winston = require('winston');
 
 function collect(val, memo) {
   memo.push(val);
@@ -19,7 +20,13 @@ program
   .option('-n, --name [name]', 'Domain Name', 'local')
   .option('-i, --image [image]', 'Image to proxy, default: ', collect, ['jpetazzo/dind:latest'])
   .option('-f, --filter [filter]', 'Filter', filter, {} )
+  .option('-v, --verbose', 'Verbose mode')
   .parse(process.argv);
+
+winston.cli();
+if(program.verbose) {
+  winston.level = 'debug';
+}
 
 var ee = allContainers({
   preheat: true,
@@ -30,8 +37,10 @@ var ee = allContainers({
 var router = {};
 
 ee.on('start', function(meta, container){
+  winston.debug('New Container start :', meta);
   if(program.image.indexOf(meta.image) > -1) {
     container.inspect(function(err, data) {
+      winston.debug('Add route : %s -> %s', meta.name, data.NetworkSettings.IPAddress, {});
       router[meta.name] = data.NetworkSettings.IPAddress;
     });
   }
