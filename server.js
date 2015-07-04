@@ -18,7 +18,7 @@ program
   .version('0.1.0')
   .option('-h, --host [host]', 'Default host url')
   .option('-n, --name [name]', 'Domain Name', '127.0.0.1.xip.io')
-  .option('-i, --image [image]', 'Image to proxy, default: ', collect, ['jpetazzo/dind:latest', 'jpetazzo/dind'])
+  .option('-i, --image [image]', 'Image to proxy, default: ', collect, [])
   .option('-f, --filter [filter]', 'Filter', filter, {} )
   .option('-v, --verbose', 'Verbose mode')
   .parse(process.argv);
@@ -38,10 +38,12 @@ var router = {};
 
 ee.on('start', function(meta, container){
   winston.debug('New Container start :', meta);
-  if(program.image.indexOf(meta.image) > -1) {
+  if(_.isEmpty(program.image) || _.has(program.image, meta.image)) {
     container.inspect(function(err, data) {
-      winston.debug('Add route : %s -> %s', meta.name, data.NetworkSettings.IPAddress, {});
-      router[meta.name] = data.NetworkSettings.IPAddress;
+      if(data.NetworkSettings.IPAddress) {
+        winston.debug('Add route : %s -> %s', meta.name, data.NetworkSettings.IPAddress, {});
+        router[meta.name] = data.NetworkSettings.IPAddress;
+      }
     });
   }
 });
