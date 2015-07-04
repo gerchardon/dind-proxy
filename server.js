@@ -17,8 +17,8 @@ function filter(val, memo) {
 program
   .version('0.1.0')
   .option('-h, --host [host]', 'Default host url')
-  .option('-n, --name [name]', 'Domain Name', 'local')
-  .option('-i, --image [image]', 'Image to proxy, default: ', collect, ['jpetazzo/dind:latest'])
+  .option('-n, --name [name]', 'Domain Name', '127.0.0.1.xip.io')
+  .option('-i, --image [image]', 'Image to proxy, default: ', collect, ['jpetazzo/dind:latest', 'jpetazzo/dind'])
   .option('-f, --filter [filter]', 'Filter', filter, {} )
   .option('-v, --verbose', 'Verbose mode')
   .parse(process.argv);
