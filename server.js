@@ -50,7 +50,7 @@ ee.on('stop', function(meta, container){
 });
 
 function getVirtualHostFromHeaders(headers) {
-  var headerHost = headers['host'];
+  var headerHost = headers.host;
   var host = headerHost.split(':')[0];
   return host.replace('.'+program.name, '')
     .replace(program.name, '');
@@ -60,28 +60,14 @@ function getTargetForHost(host) {
   if(host === null || host === '') return program.host;
   if(_.has(program.filter, host)) return _.get(program.filter, host);
   var target = null;
-  var user = null;
-  var env = null;
   var port = 80;
-  var info = host.split(".");
 
-  if(info.length === 1){
-    user = info[0];
-    env = user;
-  }else if(info.length === 2) {
-    user = info[1];
-    env = info[0];
-  }else if(info.length === 3) {
-    user = info[1];
-    env = info[0];
-    port = info[2];
-  }
-  var dockerName = user + '.' + env;
-  if(dockerName in router) {
+  var dockerName = host;
+  if(_.has(router, dockerName)) {
     target = 'http://' + router[dockerName] + ':' + port;
   }
   return target;
-};
+}
 
 var proxy = httpProxy.createProxyServer({});
 
