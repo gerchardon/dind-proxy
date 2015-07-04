@@ -8,7 +8,8 @@
     "commander": "^2.8.1",
     "docker-allcontainers": "^0.4.0",
     "http-proxy": "^1.11.1",
-    "lodash": "^3.10.0"
+    "lodash": "^3.10.0",
+    "winston": "^1.0.1"
   },
   "bin": {
     "dind-proxy": "./server.js"
