@@ -73,6 +73,11 @@ function getTargetForHost(host) {
 
 var proxy = httpProxy.createProxyServer({});
 
+proxy.on('proxyReq', function(proxyReq, req, res, options){
+  // Add Keep Alive to connection
+  proxyReq.setHeader('Connection', 'Keep-Alive')
+});
+
 var server = http.createServer(function(req, res) {
   var host = getVirtualHostFromHeaders(req.headers);
   var target = getTargetForHost(host);
